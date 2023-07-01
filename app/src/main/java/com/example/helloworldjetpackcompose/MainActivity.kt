@@ -5,11 +5,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -31,7 +34,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// COLUMNS
+// COLUMNS & ROWS
 
 @Composable
 @Preview(showBackground = true)
@@ -42,7 +45,6 @@ fun ColumnApp() {
             .background(Color.Gray)
     ) {
         item {
-
             Image(painter = painterResource(id = R.drawable.mayoshino), contentDescription = null)
             Text(
                 text = "Title",
@@ -52,6 +54,27 @@ fun ColumnApp() {
             )
             Text(text = "Content", color = Color.White)
             Text(text = "Footer", color = Color.White)
+            LazyRow(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                item {
+                    Text(text = "Row Title", color = Color.White)
+                    Text(text = "Row Content", color = Color.White)
+                    Text(text = "Row Footer", color = Color.White)
+                    Text(text = "Random Item", color = Color.White)
+                    Text(text = "Random Item", color = Color.White)
+                    Text(text = "Random Item", color = Color.White)
+                    Text(text = "Random Item", color = Color.White)
+                    Text(text = "Random Item", color = Color.White)
+                    Text(text = "Random Item", color = Color.White)
+                    Text(text = "Random Item", color = Color.White)
+                    Text(text = "Random Item", color = Color.White)
+                }
+
+            }
         }
     }
 
