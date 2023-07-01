@@ -5,8 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +17,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -34,11 +36,23 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// STATES
+
+
 // COLUMNS & ROWS
 
 @Composable
 @Preview(showBackground = true)
 fun ColumnApp() {
+    // STATE
+    // Here we're creating a value counter with an initial state (zero), and we're setting it to
+    // be remembered (persistable)
+    // remember -> saves in the current lifecycle state (i.e. rotates and value resets
+    // rememberSaveable -> saves throught all lifecycle states (i.e. can rotate and value remains)
+    var counter by rememberSaveable {
+        mutableStateOf(0)
+    }
+    // COLUMS
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -46,6 +60,18 @@ fun ColumnApp() {
     ) {
         item {
             Image(painter = painterResource(id = R.drawable.mayoshino), contentDescription = null)
+            Row(modifier = Modifier.padding(8.dp)) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_favorite),
+                    contentDescription = "like",
+                    modifier = Modifier.clickable { counter++ }
+                )
+                Text(
+                    text = counter.toString(),
+                    color = Color.White,
+                    modifier = Modifier.padding(4.dp)
+                )
+            }
             Text(
                 text = "Title",
                 fontSize = 32.sp,
@@ -54,6 +80,7 @@ fun ColumnApp() {
             )
             Text(text = "Content", color = Color.White)
             Text(text = "Footer", color = Color.White)
+            // ROWS
             LazyRow(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
