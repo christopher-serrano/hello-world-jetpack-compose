@@ -1,13 +1,16 @@
 @file:OptIn(
-    ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class
+    ExperimentalMaterial3Api::class
 )
 
 package com.example.helloworldjetpackcompose
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.WindowInsets
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,10 +19,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -29,6 +35,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -52,8 +59,21 @@ class MainActivity : ComponentActivity() {
 fun ViewContainer() {
     Scaffold(
         topBar = { Toolbar() },
-        content = { Content() }
-    )
+        floatingActionButton = { FAButton() },
+        floatingActionButtonPosition = FabPosition.End
+    ) { paddingValues ->
+        Content(modifier = Modifier.padding(paddingValues))
+    }
+}
+
+@Composable
+fun FAButton() {
+    val context = LocalContext.current
+    FloatingActionButton(onClick = {
+        Toast.makeText(context, "Mensaje", Toast.LENGTH_SHORT).show()
+    }) {
+        Text("X")
+    }
 }
 
 @Composable
@@ -62,9 +82,8 @@ fun Toolbar() {
     TopAppBar(
         title = { Text(text = "App Toolbar", color = colorResource(id = R.color.white)) },
         colors = TopAppBarDefaults.smallTopAppBarColors(
-            containerColor = colorResource(id = R.color.red_opaque)
-        ),
-        modifier = Modifier.systemBarsPadding()
+            containerColor = Color.Red
+        )
     )
 }
 
@@ -72,7 +91,7 @@ fun Toolbar() {
 
 @Composable
 @Preview(showBackground = true)
-fun Content() {
+fun Content(modifier: Modifier = Modifier) {
     // STATE
     // Here we're creating a value counter with an initial state (zero), and we're setting it to
     // be remembered (persistable)
@@ -83,7 +102,7 @@ fun Content() {
     }
     // COLUMS
     LazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(Color.Gray)
             .padding(16.dp)
@@ -134,4 +153,5 @@ fun Content() {
             }
         }
     }
+
 }
