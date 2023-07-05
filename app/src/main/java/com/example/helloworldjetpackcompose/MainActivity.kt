@@ -1,5 +1,10 @@
+@file:OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class
+)
+
 package com.example.helloworldjetpackcompose
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,39 +16,63 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.helloworldjetpackcompose.ui.theme.HelloWorldJetpackComposeTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ColumnApp()
+            ViewContainer()
         }
     }
 }
 
-// STATES
+// TOOLBAR AND WOTNOT
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+@Preview(showBackground = true)
+fun ViewContainer() {
+    Scaffold(
+        topBar = { Toolbar() },
+        content = { Content() }
+    )
+}
+
+@Composable
+@Preview
+fun Toolbar() {
+    TopAppBar(
+        title = { Text(text = "App Toolbar", color = colorResource(id = R.color.white)) },
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = colorResource(id = R.color.red_opaque)
+        ),
+        modifier = Modifier.systemBarsPadding()
+    )
+}
 
 // COLUMNS & ROWS
 
 @Composable
 @Preview(showBackground = true)
-fun ColumnApp() {
+fun Content() {
     // STATE
     // Here we're creating a value counter with an initial state (zero), and we're setting it to
     // be remembered (persistable)
@@ -57,6 +86,7 @@ fun ColumnApp() {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Gray)
+            .padding(16.dp)
     ) {
         item {
             Image(painter = painterResource(id = R.drawable.mayoshino), contentDescription = null)
@@ -103,53 +133,5 @@ fun ColumnApp() {
 
             }
         }
-    }
-
-
-}
-
-// INIT TUTORIAL
-
-@Preview(showBackground = true)
-@Composable
-fun HelloApp() {
-    HelloWorldJetpackComposeTheme {
-        // A surface container using the 'background' color from the theme
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            Greeting("Totona")
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ExampleModifier() {
-    Text(text = "Text view normal", modifier = Modifier.padding(16.dp))
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    HelloWorldJetpackComposeTheme {
-        Greeting("Captain Arepa")
-    }
-}
-
-@Preview(showBackground = true, name = "Another Preview")
-@Composable
-fun AnotherGreetingPreview() {
-    HelloWorldJetpackComposeTheme {
-        Greeting("Captain Arepa")
     }
 }
